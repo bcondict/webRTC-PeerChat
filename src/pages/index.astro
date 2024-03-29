@@ -1,0 +1,55 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="PeerChat">
+  <main>
+    <div id="videos">
+      <video class="video-player" id="user-1" autoplay playsinline></video>
+      <video class="video-player" id="user-2" autoplay playsinline></video>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  #videos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .video-player {
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  const init = async () => {
+    /*
+    const localStream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false,
+    });
+    */
+    const displayMediaOptions = {
+      video: { displaySurface: "browser" },
+      audio: false,
+      preferCurrentTab: true,
+      /*
+      audio: {suppressLocalAudioPlayback: false,},
+      preferCurrentTab: false,
+      selfBrawserSurface: "exclude",
+      systemAudio: "include",
+      surfaceSwitching: "include",
+      monitorTypeSurfaces: "inlcude",
+      */
+    };
+    const localStream =
+      await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+
+    document.getElementById("user-1").srcObject = localStream;
+  };
+
+  init().catch(console.error);
+</script>
